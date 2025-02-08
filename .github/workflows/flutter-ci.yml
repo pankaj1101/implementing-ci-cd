@@ -15,14 +15,23 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+        uses: subosito/flutter-action@v3
         with:
           flutter-version: "3.16.0"
           channel: "stable"
           # 3.x # Change to your Flutter version
 
-      - name: Install dependencies
-        run: flutter pub get
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            C:\Users\runneradmin\AppData\Local\Pub\Cache
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-
+
+      # - name: Install dependencies
+      #   run: flutter pub get
 
       - name: Decode Firebase Service Account Key
         run: |
