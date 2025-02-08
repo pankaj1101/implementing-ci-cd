@@ -49,16 +49,11 @@ jobs:
       - name: Verify Firebase CLI Installation
         run: firebase --version
 
-      # - name: Decode Firebase Service Account Key
-      #   run: |
-      #     echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > $env:GITHUB_WORKSPACE\service-account.json
-      #     setx GOOGLE_APPLICATION_CREDENTIALS "$env:GITHUB_WORKSPACE\service-account.json"
-      #   shell: pwsh
-
-      - name: Authenticate Firebase
+      - name: Authenticate with Firebase using Service Account
         run: |
-          echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" > $env:GITHUB_WORKSPACE\service-account.json
-          setx GOOGLE_APPLICATION_CREDENTIALS "$env:GITHUB_WORKSPACE\service-account.json"
+          echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' > $env:GITHUB_WORKSPACE\service-account.json
+          $env:GOOGLE_APPLICATION_CREDENTIALS = "$env:GITHUB_WORKSPACE\service-account.json"
+          firebase projects:list
         shell: pwsh
 
       - name: Build APK
@@ -69,8 +64,8 @@ jobs:
 
       - name: Upload APK to Firebase App Distribution
         run: |
-          firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk `
-            --app "${{ secrets.FIREBASE_APP_ID }}" `
-            --groups testers `
-            --release-notes "Testing the app"
+          firebase appdistribution:distribute "build/app/outputs/flutter-apk/app-release.apk" `
+            --app="${{ secrets.FIREBASE_APP_ID }}" `
+            --groups="testers" `
+            --release-notes="Testing the app"
         shell: pwsh
