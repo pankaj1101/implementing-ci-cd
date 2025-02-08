@@ -63,9 +63,10 @@ jobs:
 
       - name: Upload APK to Firebase App Distribution
         run: |
-          firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk ^
-            --app "${{ secrets.FIREBASE_APP_ID }}" ^
-            --token "${{ secrets.FIREBASE_CI_TOKEN }}" ^
-            --groups testers ^
+          firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk `
+            --app "${{ secrets.FIREBASE_APP_ID }}" `
+            --token "${{ secrets.FIREBASE_CI_TOKEN }}" `
+            --groups testers `
             --release-notes "Testing the app"
         shell: pwsh
+
