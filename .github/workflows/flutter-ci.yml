@@ -49,9 +49,16 @@ jobs:
           echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" > $env:GITHUB_WORKSPACE\service-account.json
         shell: pwsh
 
+      # - name: Authenticate Firebase
+      #   run: |
+      #     set GOOGLE_APPLICATION_CREDENTIALS=$env:GITHUB_WORKSPACE\service-account.json
+
       - name: Authenticate Firebase
         run: |
-          set GOOGLE_APPLICATION_CREDENTIALS=$env:GITHUB_WORKSPACE\service-account.json
+          gci
+          npx firebase-tools login:ci --token "$(cat $env:GITHUB_WORKSPACE\service-account.json)" || echo "Skipping login"
+          export GOOGLE_APPLICATION_CREDENTIALS="$env:GITHUB_WORKSPACE\service-account.json"
+        shell: bash
 
       - name: Build APK
         run: flutter build apk --release
@@ -69,7 +76,8 @@ jobs:
             --token "${{ secrets.FIREBASE_CI_TOKEN }}" ^
             --groups testers ^
             --release-notes "Testing the app"
-        shell: cmd
+        shell:
+          cmd
 
           # firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk ^
           #   --app "${{ secrets.FIREBASE_APP_ID }}" ^
