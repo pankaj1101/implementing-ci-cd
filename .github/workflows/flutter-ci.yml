@@ -68,4 +68,4 @@ jobs:
             --app="${{ secrets.FIREBASE_APP_ID }}" `
             --groups="testers" `
             --release-notes="Testing the app"
-        shell: pwsh
+        shell: bash
