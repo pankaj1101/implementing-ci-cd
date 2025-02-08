@@ -30,8 +30,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pub-
 
-      # - name: Install dependencies
-      #   run: flutter pub get
+      - name: Install dependencies
+        run: flutter pub get
 
       - name: Decode Firebase Service Account Key
         run: |
