@@ -1,0 +1,3 @@
+- Fixed login issue 🔧  
+- Improved app performance 🚀  
+- UI Enhancements 🎨  

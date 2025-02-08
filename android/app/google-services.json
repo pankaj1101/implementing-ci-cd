@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "964679237913",
+    "project_id": "explore-ci-cd-d7b17",
+    "storage_bucket": "explore-ci-cd-d7b17.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:964679237913:android:22dbe9126c2a84aa25c588",
+        "android_client_info": {
+          "package_name": "com.example.explore_ci_cd"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBApUY-kNWH-A6sk6GBh9WbEvExbJdVYoc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
