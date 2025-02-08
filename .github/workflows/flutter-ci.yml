@@ -17,9 +17,14 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.16.0"
+          flutter-version: "3.27.0" # Match your local version
           channel: "stable"
-          # 3.x # Change to your Flutter version
+          cache: true
+
+      - name: Verify Flutter & Dart Versions
+        run: |
+          flutter --version
+          dart --version
 
       - name: Cache Flutter dependencies
         uses: actions/cache@v3
