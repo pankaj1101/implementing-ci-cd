@@ -41,17 +41,11 @@ android {
     }
 
     signingConfigs {
-        // release {
-        //     keyAlias = keystoreProperties['keyAlias']
-        //     keyPassword = keystoreProperties['keyPassword']
-        //     storeFile = keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-        //     storePassword = keystoreProperties['storePassword']
-        // }
-        release{
-            keyAlias = System.getenv("ANDROID_KEY_ALIAS") ?: ""
-            keyPassword = System.getenv("ANDROID_KEY_PASSWORD") ?: ""
-            storeFile = file("${rootProject.projectDir}/app/" + (System.getenv("ANDROID_STORE_FILE") ?: ""))
-            storePassword = System.getenv("ANDROID_KEYSTORE_PASSWORD") ?: ""
+        release {
+            keyAlias = keystoreProperties['keyAlias']
+            keyPassword = keystoreProperties['keyPassword']
+            storeFile = keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storePassword = keystoreProperties['storePassword']
         }
     }
 
