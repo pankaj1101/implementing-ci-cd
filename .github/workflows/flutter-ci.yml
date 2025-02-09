@@ -46,12 +46,23 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      # - name: Decode Keystore
+      #   run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/app/keystore.jks
       - name: Decode Keystore
-        run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/app/keystore.jks
-        shell: bash
+        run: |
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/app/keystore.jks
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
 
       - name: Set Keystore Path
         run: echo "ANDROID_KEYSTORE_PATH=$(pwd)/android/app/keystore.jks" >> $GITHUB_ENV
+
+      - name: Create Key Properties
+        run: |
+          echo "storeFile=keystore.jks" > android/key.properties
+          echo "keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}" >> android/key.properties
+          echo "storePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" >> android/key.properties
+          echo "keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}" >> android/key.properties
 
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
