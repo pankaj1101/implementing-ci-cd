@@ -52,22 +52,6 @@ jobs:
       - name: Build APK
         run: flutter build apk --release
 
-      # - name: Upload APK to Firebase App Distribution
-      #   run: |
-      #     firebase appdistribution:distribute "build/app/outputs/flutter-apk/app-release.apk" `
-      #       --app="${{ secrets.FIREBASE_APP_ID }}" `
-      #       --groups="testers" `
-      #       --release-notes="Testing the app"
-      #   shell: bash
-
-      # - name: Distribute APK to Firebase
-      #   run: |
-      #     firebase appdistribution:distribute build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk \
-      #       --app "${{ secrets.FIREBASE_APP_ID }}" \
-      #       --token "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" \
-      #       --release-notes "New release" \
-      #       --groups testers
-
       - name: Upload to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
@@ -75,3 +59,12 @@ jobs:
           serviceCredentialsJson: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
           groups: testers
           file: build/app/outputs/flutter-apk/app-release.apk
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: "Release v1.0.${{ github.run_number }}"
+          draft: false
+          prerelease: false
+          files: build/app/outputs/flutter-apk/app-release.apk
