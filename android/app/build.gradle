@@ -48,10 +48,10 @@ android {
         //     storePassword = keystoreProperties['storePassword']
         // }
         release{
-            keyAlias = System.getenv("KEY_ALIAS") ?: ""
-            keyPassword = System.getenv("KEY_PASSWORD") ?: ""
-            storeFile = file("${rootProject.projectDir}/app/" + (System.getenv("STORE_FILE") ?: ""))
-            storePassword = System.getenv("STORE_PASSWORD") ?: ""
+            keyAlias = System.getenv("ANDROID_KEY_ALIAS") ?: ""
+            keyPassword = System.getenv("ANDROID_KEY_PASSWORD") ?: ""
+            storeFile = file("${rootProject.projectDir}/app/" + (System.getenv("ANDROID_STORE_FILE") ?: ""))
+            storePassword = System.getenv("ANDROID_KEYSTORE_PASSWORD") ?: ""
         }
     }
 
