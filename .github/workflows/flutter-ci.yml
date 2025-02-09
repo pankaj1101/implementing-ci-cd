@@ -62,10 +62,10 @@ jobs:
         run: flutter build apk --release
 
       - name: Decode Keystore File
-        run: echo "${{ secrets.ANDROID_KEYSTORE }}" | base64 --decode > android/app/key.jks
+        run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/app/keystore.jks
 
       - name: Decode Key Properties File
-        run: echo "${{ secrets.ANDROID_KEY_PROPERTIES }}" | base64 --decode > android/key.properties
+        run: echo "${{ secrets.ANDROID_KEY_PROPERTIES_BASE64 }}" | base64 --decode > android/key.properties
 
       - name: Build Release APK
         run: flutter build apk --release
