@@ -56,7 +56,7 @@ jobs:
         run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/app/keystore.jks
 
       - name: Decode Key Properties File
-        run: echo "${{ secrets.ANDROID_KEY_PROPERTIES_BASE64 }}" | base64 --decode > android/app/key.properties
+        run: echo "${{ secrets.ANDROID_KEY_PROPERTIES_BASE64 }}" | base64 --decode > android/key.properties
 
       - name: Set Signing Environment Variables
         run: |
