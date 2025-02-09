@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
       - name: Checkout code
@@ -46,9 +46,6 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Clean project
-        run: flutter clean
-
       - name: Install npm
         run: sudo apt-get install -y npm
 
@@ -57,9 +54,6 @@ jobs:
 
       - name: Verify Firebase CLI Installation
         run: firebase --version
-
-      - name: Build APK
-        run: flutter build apk --release
 
       - name: Decode Keystore File
         run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/app/keystore.jks
@@ -70,18 +64,18 @@ jobs:
       - name: Build Release APK
         run: flutter build apk --release
 
-      - name: Create GitHub Release
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "build/app/outputs/apk/release/*.apk"
-          tag: v1.0.${{ github.run_number }}
-          token: ${{ secrets.TOKEN }}
+      # - name: Create GitHub Release
+      #   uses: ncipollo/release-action@v1
+      #   with:
+      #     artifacts: "build/app/outputs/apk/release/*.apk"
+      #     tag: v1.0.${{ github.run_number }}
+      #     token: ${{ secrets.TOKEN }}
 
-      - name: Upload to Firebase App Distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1
-        with:
-          appId: ${{ secrets.FIREBASE_APP_ID }}
-          serviceCredentialsFileContent: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-          groups: testers
-          file: build/app/outputs/flutter-apk/app-release.apk
-          releaseNotes: "This is the release note for the current build."
+      # - name: Upload to Firebase App Distribution
+      #   uses: wzieba/Firebase-Distribution-Github-Action@v1
+      #   with:
+      #     appId: ${{ secrets.FIREBASE_APP_ID }}
+      #     serviceCredentialsFileContent: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+      #     groups: testers
+      #     file: build/app/outputs/flutter-apk/app-release.apk
+      #     releaseNotes: "This is the release note for the current build."
