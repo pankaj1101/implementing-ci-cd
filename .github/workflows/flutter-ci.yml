@@ -58,6 +58,13 @@ jobs:
       - name: Decode Key Properties File
         run: echo "${{ secrets.ANDROID_KEY_PROPERTIES_BASE64 }}" | base64 --decode > android/app/key.properties
 
+      - name: Set Signing Environment Variables
+        run: |
+          echo "STORE_PASSWORD=$(grep storePassword android/app/key.properties | cut -d '=' -f2)" >> $GITHUB_ENV
+          echo "KEY_PASSWORD=$(grep keyPassword android/app/key.properties | cut -d '=' -f2)" >> $GITHUB_ENV
+          echo "KEY_ALIAS=$(grep keyAlias android/app/key.properties | cut -d '=' -f2)" >> $GITHUB_ENV
+          echo "STORE_FILE=keystore.jks" >> $GITHUB_ENV
+
       - name: Build Release APK
         run: flutter build apk --release
 
