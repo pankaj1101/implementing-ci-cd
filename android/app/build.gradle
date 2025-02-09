@@ -21,6 +21,15 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
+
+def keystoreFile = rootProject.file('android/app/keystore.jks')
+def keystoreBase64 = rootProject.file('keystore.jks.base64')
+if (!keystoreFile.exists() && keystoreBase64.exists()) {
+    println "Decoding keystore.jks from keystore.jks.base64..."
+    def decodedBytes = keystoreBase64.text.decodeBase64()
+    keystoreFile.withOutputStream { it.write(decodedBytes) }
+}
+
 android {
     namespace = "com.example.explore_ci_cd"
     compileSdk = flutter.compileSdkVersion
