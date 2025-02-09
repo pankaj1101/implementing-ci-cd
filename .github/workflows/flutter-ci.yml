@@ -38,7 +38,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            C:\Users\runneradmin\AppData\Local\Pub\Cache
+            ~/Library/Caches/flutter  # ✅ Corrected for macOS
           key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pub-
@@ -46,10 +46,7 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Install npm
-        run: sudo apt-get install -y npm
-
-      - name: Install Firebase CLI
+      - name: Install Firebase CLI (macOS)
         run: npm install -g firebase-tools
 
       - name: Verify Firebase CLI Installation
@@ -59,7 +56,7 @@ jobs:
         run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/app/keystore.jks
 
       - name: Decode Key Properties File
-        run: echo "${{ secrets.ANDROID_KEY_PROPERTIES_BASE64 }}" | base64 --decode > android/key.properties
+        run: echo "${{ secrets.ANDROID_KEY_PROPERTIES_BASE64 }}" | base64 --decode > android/app/key.properties
 
       - name: Build Release APK
         run: flutter build apk --release
