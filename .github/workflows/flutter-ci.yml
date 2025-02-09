@@ -42,7 +42,10 @@ jobs:
           echo "storeFile=keystore.jks" >> android/key.properties
 
       - name: Build Signed APK
-        run: flutter build apk --release
+        run: flutter build apk --release --build-name=1.0.${{ github.run_number }} --build-number=${{ github.run_number }}
+
+      # - name: Build Signed APK
+      #   run: flutter build apk --release
 
       - name: Upload Signed APK
         uses: actions/upload-artifact@v4
@@ -66,4 +69,4 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
           groups: testers
           file: build/app/outputs/flutter-apk/app-release.apk
-          releaseNotes: "This is the release note for the current build."
+          releaseNotes: "Release v1.0.${{ github.run_number }} - Build number: ${{ github.run_number }}"
