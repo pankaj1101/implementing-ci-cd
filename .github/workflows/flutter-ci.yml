@@ -33,18 +33,8 @@ jobs:
       - name: Decode Key Properties File
         run: echo "${{ secrets.ANDROID_KEY_PROPERTIES_BASE64 }}" | base64 --decode > android/key.properties
 
-      # - name: Setup Key Properties
-      #   run: |
-      #     echo "storePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" > android/key.properties
-      #     echo "keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}" >> android/key.properties
-      #     echo "keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}" >> android/key.properties
-      #     echo "storeFile=keystore.jks" >> android/key.properties
-
       - name: Build Signed APK
         run: flutter build apk --release --build-name=1.0.${{ github.run_number }} --build-number=${{ github.run_number }}
-
-      # - name: Build Signed APK
-      #   run: flutter build apk --release
 
       - name: Upload Signed APK
         uses: actions/upload-artifact@v4
