@@ -10,6 +10,13 @@ plugins {
 
 def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file("key.properties")
+
+def keystoreBase64File = rootProject.file('key.properties.base64')
+if (!keystorePropertiesFile.exists() && keystoreBase64File.exists()) {
+    println "Decoding key.properties from key.properties.base64..."
+    def decodedBytes = keystoreBase64File.text.decodeBase64()
+    keystorePropertiesFile.withOutputStream { it.write(decodedBytes) }
+}
 if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
@@ -40,20 +47,12 @@ android {
     }
 
     signingConfigs {
-        // release {
-        //     keyAlias = keystoreProperties['keyAlias']
-        //     keyPassword = keystoreProperties['keyPassword']
-        //     storeFile = keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-        //     storePassword = keystoreProperties['storePassword']
-        // }
-        
         release {
-            keyAlias System.getenv("ANDROID_KEY_ALIAS")
-            keyPassword System.getenv("ANDROID_KEY_PASSWORD")
-            storeFile file(System.getenv("ANDROID_KEYSTORE_PATH"))
-            storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
+            keyAlias = keystoreProperties['keyAlias']
+            keyPassword = keystoreProperties['keyPassword']
+            storeFile = keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storePassword = keystoreProperties['storePassword']
         }
-    
     }
 
     buildTypes {

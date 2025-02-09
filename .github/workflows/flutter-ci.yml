@@ -49,20 +49,6 @@ jobs:
       - name: Clean project
         run: flutter clean
 
-      # - name: Decode Keystore
-      #   run: |
-      #     echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/app/keystore.jks
-
-      # - name: Set Keystore Path
-      #   run: echo "ANDROID_KEYSTORE_PATH=$(pwd)/android/app/keystore.jks" >> $GITHUB_ENV
-
-      # - name: Create Key Properties
-      #   run: |
-      #     echo "storeFile=keystore.jks" > android/key.properties
-      #     echo "keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}" >> android/key.properties
-      #     echo "storePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" >> android/key.properties
-      #     echo "keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}" >> android/key.properties
-
       - name: Install npm
         run: sudo apt-get install -y npm
 
@@ -75,14 +61,30 @@ jobs:
       - name: Build APK
         run: flutter build apk --release
 
+      - name: Decode Keystore File
+        run: echo "${{ secrets.ANDROID_KEYSTORE }}" | base64 --decode > android/app/key.jks
+
+      - name: Decode Key Properties File
+        run: echo "${{ secrets.ANDROID_KEY_PROPERTIES }}" | base64 --decode > android/key.properties
+
+      - name: Build Release APK
+        run: flutter build apk --release
+
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: ncipollo/release-action@v1
         with:
-          tag_name: v1.0.${{ github.run_number }}
-          name: "Release v1.0.${{ github.run_number }}"
-          draft: false
-          prerelease: false
-          files: build/app/outputs/flutter-apk/app-release.apk
+          artifacts: "build/app/outputs/apk/release/*.apk"
+          tag: v1.0.${{ github.run_number }}
+          token: ${{ secrets.TOKEN }}
+
+      # - name: Create GitHub Release
+      #   uses: softprops/action-gh-release@v1
+      #   with:
+      #     tag_name: v1.0.${{ github.run_number }}
+      #     name: "Release v1.0.${{ github.run_number }}"
+      #     draft: false
+      #     prerelease: false
+      #     files: build/app/outputs/flutter-apk/app-release.apk
 
       - name: Upload to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
